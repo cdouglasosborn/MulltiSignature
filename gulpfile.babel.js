@@ -4,6 +4,7 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import del from 'del';
 import runSequence from 'run-sequence';
 import {stream as wiredep} from 'wiredep';
+import sass from 'gulp-sass';
 
 const $ = gulpLoadPlugins();
 
@@ -11,7 +12,6 @@ gulp.task('extras', () => {
   return gulp.src([
     'app/*.*',
     'app/_locales/**',
-    '!app/scripts.babel',
     '!app/*.json',
     '!app/*.html',
   ], {
@@ -28,11 +28,17 @@ function lint(files, options) {
   };
 }
 
-gulp.task('lint', lint('app/scripts.babel/**/*.js', {
+gulp.task('lint', lint('app/scripts/**/*.js', {
   env: {
-    es6: true
+    es6: false
   }
 }));
+
+gulp.task('sass', function () {
+  gulp.src('./app/styles/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('./app/styles'));
+});
 
 gulp.task('images', () => {
   return gulp.src('app/images/**/*')
@@ -83,28 +89,20 @@ gulp.task('chromeManifest', () => {
   .pipe(gulp.dest('dist'));
 });
 
-gulp.task('babel', () => {
-  return gulp.src('app/scripts.babel/**/*.js')
-      .pipe($.babel({
-        presets: ['es2015']
-      }))
-      .pipe(gulp.dest('app/scripts'));
-});
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('watch', ['lint', 'babel', 'html'], () => {
+gulp.task('watch', ['lint', 'html'], () => {
   $.livereload.listen();
 
   gulp.watch([
     'app/*.html',
     'app/scripts/**/*.js',
     'app/images/**/*',
-    'app/styles/**/*',
+    'app/styles/**/*.css',
     'app/_locales/**/*.json'
   ]).on('change', $.livereload.reload);
-
-  gulp.watch('app/scripts.babel/**/*.js', ['lint', 'babel']);
+  gulp.watch('app/styles/**/*.scss', ['lint', 'sass']);
   gulp.watch('bower.json', ['wiredep']);
 });
 
@@ -129,7 +127,7 @@ gulp.task('package', function () {
 
 gulp.task('build', (cb) => {
   runSequence(
-    'lint', 'babel', 'chromeManifest',
+    'lint', 'chromeManifest', 'sass',
     ['html', 'images', 'extras'],
     'size', cb);
 });

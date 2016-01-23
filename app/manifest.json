@@ -45,5 +45,8 @@
     },
     "default_title": "MultiSignature",
     "default_popup": "popup.html"
-  }
+  },
+  "web_accessible_resources": [
+    "images/Logo.png"
+  ]
 }

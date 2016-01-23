@@ -1,3 +1,5 @@
-body {
-  padding: 20px;
-}
+/**
+ * Useful Mixins to be used below
+ */
+.multi-sig-ext-div {
+  display: block; }

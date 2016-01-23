@@ -1,0 +1,63 @@
+$extension-prefix: multi-sig-ext-;
+$font-stack: Helvetica, sans-serif;
+$primary-color: #333;
+
+
+/**
+ * Useful Mixins to be used below
+ */
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+/**
+ * Container that holds everything inside of it.
+ */
+.#{$extension-prefix}container {
+  div {
+
+  }
+
+  btn {
+
+  }
+
+  input[text] {
+
+  }
+
+  input[password] {
+
+  }
+
+  a {
+
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+
+  }
+
+}
+
+.#{$extension-prefix} {
+
+  &div {
+    display: block;
+  }
+
+  &btn {
+
+  }
+
+  &input {
+
+  }
+
+  &header {
+
+  }
+}
