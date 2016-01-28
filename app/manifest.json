@@ -34,6 +34,10 @@
       "js": [
         "scripts/contentscript.js"
       ],
+      "css": [
+        "styles/autocharlie/materialcontent.css",
+        "styles/main.scss"
+      ],
       "run_at": "document_end",
       "all_frames": false
     }

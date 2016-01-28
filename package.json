@@ -10,8 +10,10 @@
     "del": "^1.1.1",
     "gulp": "^3.9.0",
     "gulp-babel": "^6.1.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-cache": "^0.2.8",
     "gulp-chrome-manifest": "0.0.11",
+    "gulp-concat-util": "^0.5.4",
     "gulp-eslint": "^0.13.2",
     "gulp-if": "^1.2.5",
     "gulp-imagemin": "^2.2.1",
@@ -19,6 +21,7 @@
     "gulp-load-plugins": "^0.10.0",
     "gulp-minify-css": "^1.2.1",
     "gulp-minify-html": "^1.0.0",
+    "gulp-replace": "^0.5.4",
     "gulp-sass": "^2.1.1",
     "gulp-size": "^1.2.1",
     "gulp-sourcemaps": "^1.5.0",
@@ -44,5 +47,9 @@
         "single"
       ]
     }
+  },
+  "dependencies": {
+    "gulp-concat": "^2.6.0",
+    "gulp-include": "^2.1.0"
   }
 }

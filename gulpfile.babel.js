@@ -5,8 +5,26 @@ import del from 'del';
 import runSequence from 'run-sequence';
 import {stream as wiredep} from 'wiredep';
 import sass from 'gulp-sass';
+import concat from 'gulp-concat-util';
+import replace from 'gulp-replace';
+import browserify from 'gulp-browserify';
 
 const $ = gulpLoadPlugins();
+
+
+gulp.task('content', function() {
+  gulp.src([
+    'app/scripts/autocharlie/**/*.js',
+    'app/scripts/shared/**/*.js',
+    'app/scripts/content/**/*.js',
+    'app/scripts/content/**/**/*.js'
+    ])
+      .pipe(concat('contentscript.js'))
+      .pipe(replace(/'use strict';/g, ''))
+      .pipe(concat.header('\'use strict\';\n'))
+      .pipe(gulp.dest('app/scripts'));
+});
+
 
 gulp.task('extras', () => {
   return gulp.src([
@@ -35,7 +53,7 @@ gulp.task('lint', lint('app/scripts/**/*.js', {
 }));
 
 gulp.task('sass', function () {
-  gulp.src('./app/styles/*.scss')
+  gulp.src('./app/styles/**/*.scss')
     .pipe(sass().on('error', sass.logError))
     .pipe(gulp.dest('./app/styles'));
 });
@@ -92,7 +110,7 @@ gulp.task('chromeManifest', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('watch', ['lint', 'html'], () => {
+gulp.task('watch', ['content', 'lint', 'html'], () => {
   $.livereload.listen();
 
   gulp.watch([
@@ -127,7 +145,8 @@ gulp.task('package', function () {
 
 gulp.task('build', (cb) => {
   runSequence(
-    'lint', 'chromeManifest', 'sass',
+    'content',
+    'lint', 'sass','chromeManifest',
     ['html', 'images', 'extras'],
     'size', cb);
 });

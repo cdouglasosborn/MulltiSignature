@@ -1,5 +1,8 @@
 /**
  * Useful Mixins to be used below
  */
+/**
+ * Container that holds everything inside of it.
+ */
 .multi-sig-ext-div {
   display: block; }
