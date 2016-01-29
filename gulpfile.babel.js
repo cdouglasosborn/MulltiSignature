@@ -12,14 +12,43 @@ import browserify from 'gulp-browserify';
 const $ = gulpLoadPlugins();
 
 
-gulp.task('content', function() {
+gulp.task('compilecontent', function() {
   gulp.src([
     'app/scripts/autocharlie/**/*.js',
     'app/scripts/shared/**/*.js',
-    'app/scripts/content/**/*.js',
-    'app/scripts/content/**/**/*.js'
+    'app/scripts/content/*/*.js',
+    'app/scripts/content/*/**/*.js',
+    'app/scripts/content/main.js'
     ])
       .pipe(concat('contentscript.js'))
+      .pipe(replace(/'use strict';/g, ''))
+      .pipe(concat.header('\'use strict\';\n'))
+      .pipe(gulp.dest('app/scripts'));
+});
+
+gulp.task('compilebackground', function() {
+  gulp.src([
+    'app/scripts/autocharlie/**/*.js',
+    'app/scripts/shared/**/*.js',
+    'app/scripts/background/*/*.js',
+    'app/scripts/background/*/**/*.js',
+    'app/scripts/background/main.js'
+    ])
+      .pipe(concat('background.js'))
+      .pipe(replace(/'use strict';/g, ''))
+      .pipe(concat.header('\'use strict\';\n'))
+      .pipe(gulp.dest('app/scripts'));
+});
+
+gulp.task('compileoptions', function() {
+  gulp.src([
+    'app/scripts/autocharlie/**/*.js',
+    'app/scripts/shared/**/*.js',
+    'app/scripts/options/*/*.js',
+    'app/scripts/options/*/**/*.js',
+    'app/scripts/options/main.js'
+    ])
+      .pipe(concat('options.js'))
       .pipe(replace(/'use strict';/g, ''))
       .pipe(concat.header('\'use strict\';\n'))
       .pipe(gulp.dest('app/scripts'));
@@ -49,6 +78,10 @@ function lint(files, options) {
 gulp.task('lint', lint('app/scripts/**/*.js', {
   env: {
     es6: false
+  },
+  globals: {
+    'autocharlie': true,
+    'multisig': true
   }
 }));
 
@@ -110,12 +143,20 @@ gulp.task('chromeManifest', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('watch', ['content', 'lint', 'html'], () => {
+gulp.task('watch', ['compilecontent', 'lint', 'html'], () => {
   $.livereload.listen();
+
+  gulp.watch('app/scripts/content/**/*.js', ['compilecontent']);
+  gulp.watch('app/scripts/background/**/*.js', ['compilebackground']);
+  gulp.watch('app/scripts/options/**/*.js', ['compileoptions']);
+  gulp.watch([
+    'app/scripts/shared/**/*.js',
+    'app/scripts/autocharlie/**/*.js'
+  ], ['compilecontent']);
 
   gulp.watch([
     'app/*.html',
-    'app/scripts/**/*.js',
+    'app/scripts/*.js',
     'app/images/**/*',
     'app/styles/**/*.css',
     'app/_locales/**/*.json'
@@ -145,7 +186,7 @@ gulp.task('package', function () {
 
 gulp.task('build', (cb) => {
   runSequence(
-    'content',
+    'compilecontent', 'compilebackground', 'compileoptions',
     'lint', 'sass','chromeManifest',
     ['html', 'images', 'extras'],
     'size', cb);
