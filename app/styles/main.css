@@ -1,6 +1,9 @@
 /**
  * Useful Mixins to be used below
  */
+.multi-sig-ext-gmail-button {
+  cursor: pointer; }
+
 /**
  * Container that holds everything inside of it.
  */

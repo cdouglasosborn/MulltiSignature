@@ -13,6 +13,17 @@ $primary-color: #333;
           border-radius: $radius;
 }
 
+
+.#{$extension-prefix}gmail-button {
+  cursor: pointer;
+}
+
+
+.#{$extension-prefix}sig-html {
+
+
+};
+
 /**
  * Container that holds everything inside of it.
  */

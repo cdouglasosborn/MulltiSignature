@@ -36,7 +36,7 @@
       ],
       "css": [
         "styles/autocharlie/materialcontent.css",
-        "styles/main.scss"
+        "styles/main.css"
       ],
       "run_at": "document_end",
       "all_frames": false
@@ -51,6 +51,8 @@
     "default_popup": "popup.html"
   },
   "web_accessible_resources": [
-    "images/Logo.png"
+    "images/Logo.png",
+    "images/icon-16.png",
+    "images/feedback.png"
   ]
 }
