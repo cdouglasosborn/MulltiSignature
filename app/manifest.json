@@ -32,6 +32,8 @@
         "https://*/*"
       ],
       "js": [
+        "scripts/advanced_parser.js",
+        "scripts/wysihtml5-0.3.0.min.js",
         "scripts/contentscript.js"
       ],
       "css": [
@@ -53,6 +55,8 @@
   "web_accessible_resources": [
     "images/Logo.png",
     "images/icon-16.png",
-    "images/feedback.png"
+    "images/Header_Feedback.png",
+    "images/Header_Close.png",
+    "images/Header_Hamburger.png"
   ]
 }
